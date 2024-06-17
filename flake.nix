@@ -21,5 +21,11 @@
           packages = with pkgs; [zig];
         };
       };
+
+      flake = {
+        lib = {
+          fetchZigDeps = import ./default.nix;
+        };
+      };
     };
 }
