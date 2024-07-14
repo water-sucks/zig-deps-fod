@@ -3,3 +3,4 @@ result
 zig-cache
 .zig-cache/
 zig-out
+example/flake.lock
