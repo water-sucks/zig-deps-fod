@@ -36,6 +36,8 @@ stdenv.mkDerivation {
       package_dirs_checked+=("$package")
 
       if [ -e "$package/build.zig.zon" ]; then
+        sed -i '/^\s*\.lazy\s*=\s*true\s*,\s*$/d' "$package/build.zig.zon"
+
         cd "$package" || exit 1
         zig build --fetch --global-cache-dir "$zig_cache" --cache-dir "$zig_cache"
         for dir in "$zig_cache"/p/*; do
