@@ -1,22 +1,24 @@
 const std = @import("std");
 
-pub fn build(b: *std.Build) void {
+pub fn build(b: *std.Build) !void {
     const target = b.standardTargetOptions(.{});
     const optimize = b.standardOptimizeOption(.{});
 
-    const zig_clap_dep = b.dependency("clap", .{
-        .target = target,
-        .optimize = optimize,
-    });
+    const zig_string = b.dependency("zig_string", .{});
+    const zig_string_mod = zig_string.module("string");
 
-    const exe = b.addExecutable(.{
-        .name = "example",
+    const exe_mod = b.createModule(.{
         .root_source_file = b.path("src/main.zig"),
         .target = target,
         .optimize = optimize,
     });
+    exe_mod.addImport("string", zig_string_mod);
+
+    const exe = b.addExecutable(.{
+        .name = "example",
+        .root_module = exe_mod,
+    });
     b.installArtifact(exe);
-    exe.root_module.addImport("clap", zig_clap_dep.module("clap"));
 
     const run_cmd = b.addRunArtifact(exe);
     run_cmd.step.dependOn(b.getInstallStep());

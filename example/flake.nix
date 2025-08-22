@@ -34,7 +34,7 @@
             name = "example";
             inherit stdenv zig;
             src = ./.;
-            depsHash = "sha256-BZ7usVI2tcdcrZkbnQAVTD9ntX/8gnrWXwvbPcgX+6o=";
+            depsHash = "sha256-jbCbmKTdRh3RrK0eyfMeWUqwK6Vsx8Wq65bUSecoZyY=";
           };
         in
           stdenv.mkDerivation {
