@@ -43,26 +43,13 @@
             src = ./.;
 
             postPatch = ''
-              mkdir -p .cache
-              ln -s ${deps} .cache/p
+              ZIG_GLOBAL_CACHE_DIR=$(mktemp -d)
+              export ZIG_GLOBAL_CACHE_DIR
 
-              ls .cache/p
+              ln -s ${deps} "$ZIG_GLOBAL_CACHE_DIR/p"
             '';
 
-            nativeBuildInputs = [zig];
-
-            dontConfigure = true;
-            dontInstall = true;
-
-            buildPhase = ''
-              mkdir -p $out
-              zig build install \
-                --cache-dir $(pwd)/zig-cache \
-                --global-cache-dir $(pwd)/.cache \
-                -Dcpu=baseline \
-                -Doptimize=ReleaseSafe \
-                --prefix $out
-            '';
+            nativeBuildInputs = [zig.hook];
           };
       };
     };

@@ -36,9 +36,13 @@ in stdenv.mkDerivation {
   src = ./.;
 
   postPatch = ''
-    mkdir -p .cache
-    ln -s ${deps} .cache/p
+    ZIG_GLOBAL_CACHE_DIR=$(mktemp -d)
+    export ZIG_GLOBAL_CACHE_DIR
+
+    ln -s ${deps} "$ZIG_GLOBAL_CACHE_DIR/p"
   '';
+
+  nativeBuildInputs = [zig.hook];
 
   # ...other attrs for building your zig packages
 }
