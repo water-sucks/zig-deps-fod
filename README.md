@@ -10,6 +10,10 @@ That way, you won't need to generate a file using
 [`zon2nix`](https://github.com/nix-community/zon2nix) anymore! Because `-2nix`
 fetchers kinda suck for DX.
 
+This project will be obsolete when/if this
+[pull request](https://github.com/NixOS/nixpkgs/pull/438523) to `nixpkgs` is
+merged.
+
 ## Usage
 
 This requires Zig version >= 0.12.0.
@@ -21,19 +25,24 @@ A single function, `fetchZigDeps` is exposed from this flake. Use it like this
 {pkgs ? import <nixpkgs> {}}:
 
 let
-  name = "example";
-  inherit (pkgs) zig stdenv;
-
-  deps = fetchZigDeps {
-    inherit name zig stdenv;
-    src = ./.;
-    depsHash = "sha256-00000000000000000000000000000000000000000000";
-  }
-
-in stdenv.mkDerivation {
   pname = "example";
   version = "0.0.1";
   src = ./.;
+
+  inherit (pkgs) zig stdenv;
+
+  deps = fetchZigDeps {
+    inherit pname version src zig stdenv;
+    depsHash = "sha256-00000000000000000000000000000000000000000000";
+    # Set this to true if having problems with fetching lazy dependencies
+    # in Zig versions prior to 0.15.1.
+    # This can resolve some (but not all) issues, and may require upstream
+    # to update to Zig 0.15.1 in order to properly vendor dependencies.
+    manuallyFetchLazyDeps = false;
+  }
+
+in stdenv.mkDerivation {
+  inherit pname version src;
 
   postPatch = ''
     ZIG_GLOBAL_CACHE_DIR=$(mktemp -d)
@@ -49,10 +58,3 @@ in stdenv.mkDerivation {
 ```
 
 An example project using this flake is in the [example](./example) directory.
-
-## Disclaimers
-
-This should only be a temporary measure, for now. I would like to get this into
-`nixpkgs` at some point once this is in good shape and is tested with multiple
-packages that use Zig in production. I would appreciate testing, and please
-report issues or possible improvements. They are greatly appreciated.
