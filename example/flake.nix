@@ -30,17 +30,17 @@
           inherit (pkgs) stdenv zig;
           inherit (zig-deps-fod.lib) fetchZigDeps;
 
+          pname = "example";
+          version = "0.0.1";
+          src = ./.;
+
           deps = fetchZigDeps {
-            name = "example";
-            inherit stdenv zig;
-            src = ./.;
-            depsHash = "sha256-jbCbmKTdRh3RrK0eyfMeWUqwK6Vsx8Wq65bUSecoZyY=";
+            inherit pname version src stdenv zig;
+            hash = "sha256-Z9dWPmAfnRDPljYGxp67whZZSeu4oAqqCN0Nax3oVOM=";
           };
         in
           stdenv.mkDerivation {
-            pname = "example";
-            version = "0.0.1";
-            src = ./.;
+            inherit pname version src;
 
             postPatch = ''
               ZIG_GLOBAL_CACHE_DIR=$(mktemp -d)

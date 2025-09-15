@@ -5,14 +5,15 @@ pub fn build(b: *std.Build) !void {
     const optimize = b.standardOptimizeOption(.{});
 
     const zig_string = b.dependency("zig_string", .{});
-    const zig_string_mod = zig_string.module("string");
 
     const exe_mod = b.createModule(.{
         .root_source_file = b.path("src/main.zig"),
         .target = target,
         .optimize = optimize,
+        .imports = &.{
+            .{ .name = "string", .module = zig_string.module("string") },
+        },
     });
-    exe_mod.addImport("string", zig_string_mod);
 
     const exe = b.addExecutable(.{
         .name = "example",

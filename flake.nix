@@ -24,7 +24,7 @@
 
       flake = {
         lib = {
-          fetchZigDeps = import ./default.nix;
+          fetchZigDeps = import ./default.nix nixpkgs.lib;
         };
       };
     };

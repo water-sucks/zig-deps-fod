@@ -1,12 +1,12 @@
 .{
     .name = .example,
     .version = "0.0.1",
-    .minimum_zig_version = "0.14.1",
+    .minimum_zig_version = "0.15.1",
     .fingerprint = 0x6eec9b9f2267211b,
     .dependencies = .{
         .zig_string = .{
-            .url = "git+https://github.com/JakubSzark/zig-string#f6f9e5dc7c5c45a72473de245a0e6958ef2bf913",
-            .hash = "zig_string-0.10.0-6dpLWpuVAADZJB6sW8ig4uIMqhhgOYWI8lgXWBWL-F-B",
+            .url = "git+https://github.com/JakubSzark/zig-string#0a681caf8286d8cc6652ef475cb6a3e9c3a2fda9",
+            .hash = "zig_string-0.10.0-6dpLWi2YAAChhjDX6FH6rxrEEKLBsJDxVxizo-dZvtDm",
         },
     },
     .paths = .{
